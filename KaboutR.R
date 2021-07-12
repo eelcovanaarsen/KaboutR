@@ -221,7 +221,8 @@ KaboutR <- function(){
       } else {
         # Dataset samenstellen
         df <- df_xl %>% select(starts_with(paste0(q,"_"))  & !ends_with("_text"))
-        n=nrow(df %>% drop_na())
+        df <- df %>% drop_na()
+        n=nrow(df)
         text <- paste0(q," - " , gsub("[|].*", "",var_lab(df[1]))," (N=",n ,") (Meerdere antwoorden mogelijk)")
         # figuur maken en wegschrijven
         hoogte=(length(df)/2.66666+2) %>% round()
@@ -245,7 +246,8 @@ KaboutR <- function(){
       # q <- codeplan$`Question Variable`[i]
       q <- codeplan$Variable[i]
       df <- df_xl %>% select(q)
-      n=nrow(df %>% drop_na())
+      df <- df %>% drop_na()
+      n=nrow(df)
       text <- paste0(q," - " , gsub("[|].*", "",codeplan$Question[i])," (N=", n,")")
       # qn <- paste0(q, " (N=", nrow(df %>% drop_na()),")")#correctie op aantal rijen: NA er uit 
       list_of_tables[[q]] <- cro_cpct(df, total_row_position ="none") %>% #rename(!!quo_name(text) := 1, '#%'=2) %>%   #variabele naam in de kop
@@ -262,7 +264,8 @@ KaboutR <- function(){
         
         item <- codeplan %>% filter(`Question Variable`==q & `Data Type`=="Number") %>% pull(Row) #Toegevoegd: & `Data Type`=="Number" 
         df <- df_xl %>% select(starts_with(paste0(q,"_"))  & !ends_with("_text"))
-        n=nrow(df %>% drop_na())
+        df <- df %>% drop_na()
+        n=nrow(df)
         # qn <- paste0(q, " (N=", nrow(df),")")
         text <- paste0(q," - " , gsub("[|].*", "",codeplan$Question[i])," (N=", n,")")
         # text <- paste0(q," - " , gsub("[|].*", "",var_lab(df[1]))," (N=", nrow(df),")")
@@ -308,3 +311,4 @@ KaboutR <- function(){
   saveWorkbook(wb, paste0("Output_",format(Sys.time(), "%y%m%d_%H%M"),".xlsx"), overwrite = F)
   
 }
+
